@@ -7,13 +7,18 @@
 
 path = ARGV.length > 0 ? ARGV[0] : '/usr/share/dict/words'
 entries = File.read(path).split("\n")
+entries_hash = Hash.new
+entries.each do |entry|
+  entries_hash[entry] = entry
+end
 
 contents = $stdin.read
 output = contents.gsub(/[^ \n]+/) do |word|
-  if entries.include?(word.downcase)
+  if entries_hash[word.downcase]
     word
   else
     "<#{word}>"
   end
 end
 print output
+
